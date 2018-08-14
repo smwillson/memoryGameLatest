@@ -41,13 +41,20 @@ function shuffle(array) {
 
 let isCardClicked = false;
 
+let totalSeconds = 0;
+
 let cardZeroClass,
 	cardOneClass;
 
 let openCardArray= [],
 	openCardIndex= 0;
+	
+let seconds = document.getElementById("seconds");
+let minutes = document.getElementById("minutes");
  
 let cardArray= document.querySelectorAll(".deck .card");
+
+let gameInProgress = false;
 
  //set up an event listener for all cards
 for(let index = 0; index < cardArray.length; index++){
@@ -88,22 +95,27 @@ function timeout_trigger() {
 	 
  }
  function displayCard(card){
-	
+	 
+	 
 	let cardInFocus = card;
 	  
 	let buttonClasses = cardInFocus.classList;
 	
 	console.log(buttonClasses);
 	
+	
 	if(isCardClicked){
 		
 		card.classList.add("open", "show");
 		
 	}
+	 gameInProgress = true;
+	
 	
 	openCardArray[openCardIndex++] = card;
 	
-
+	//start game timer
+	startGameTimer();
 	//check if the 2 open cards match
 	if(openCardArray.length == 2){
 		
@@ -126,9 +138,25 @@ function timeout_trigger() {
 			countdown_init();  // start counting down and hide the card again
 			
 		}
-			
+		
 	}
 	
 	
  }
+ function startGameTimer(){
+	 
+	 setInterval(function(){
+		 
+		document.getElementById("seconds").innerHTML = pad(++totalSeconds % 60); 
+		document.getElementById("minutes").innerHTML = pad(parseInt(totalSeconds / 60),10);
+	 		 
+	 }, 1000);
+
+	
+ }
  
+ 
+ function pad(val) {
+	 
+  return val > 9 ? val : "0" + val;
+ }

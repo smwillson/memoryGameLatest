@@ -107,3 +107,11 @@ h1 {
     float: right;
     cursor: pointer;
 }
+/*
+ * Styles for the memory game timer
+ */
+ 
+.score-panel .memory-game-timer{
+	display: block;
+	margin-bottom: 10px 0;
+}
