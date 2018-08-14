@@ -37,7 +37,7 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
- 
+ /* ****************** Global Variables ************************** */
 
 let isCardClicked = false;
 
@@ -48,6 +48,8 @@ let cardZeroClass,
 
 let openCardArray= [],
 	openCardIndex= 0;
+
+let  timerInterval;
 	
 let seconds = document.getElementById("seconds");
 let minutes = document.getElementById("minutes");
@@ -55,6 +57,8 @@ let minutes = document.getElementById("minutes");
 let cardArray= document.querySelectorAll(".deck .card");
 
 let gameInProgress = false;
+
+/* ************************ Start logic ********************************** */
 
  //set up an event listener for all cards
 for(let index = 0; index < cardArray.length; index++){
@@ -145,7 +149,7 @@ function timeout_trigger() {
  }
  function startGameTimer(){
 	 
-	 setInterval(function(){
+		timerInterval = setInterval(function(){
 		 
 		document.getElementById("seconds").innerHTML = pad(++totalSeconds % 60); 
 		document.getElementById("minutes").innerHTML = pad(parseInt(totalSeconds / 60),10);
@@ -154,9 +158,25 @@ function timeout_trigger() {
 
 	
  }
- 
- 
- function pad(val) {
+
+let restartButton = document.querySelector(".restart" ,".fa fa-repeat");
 	 
-  return val > 9 ? val : "0" + val;
+	 
+restartButton.addEventListener('click',reStart);
+
+function reStart(){
+		 
+		 document.querySelector('h1').innerHTML="Memory Game";
+		 console.log(timerInterval);
+		clearInterval(timerInterval);
+		 
+		 document.getElementById("seconds").innerHTML = "00";
+		 
+		 document.getElementById("minutes").innerHTML = "00";
+	 }
+ 
+ 
+ function pad(timeValue) {
+	 
+  return timeValue > 9 ? timeValue : "0" + timeValue;
  }

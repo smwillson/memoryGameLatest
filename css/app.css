@@ -111,7 +111,17 @@ h1 {
  * Styles for the memory game timer
  */
  
-.score-panel .memory-game-timer{
-	display: block;
-	margin-bottom: 10px 0;
+#minutes{
+	display: inline-block;
+}
+
+#seconds{
+	display: inline-block;
+}
+
+#timer-label{
+	
+	padding-left:10px; 
+	position: right;
+	font-family: sans-serif;
 }
