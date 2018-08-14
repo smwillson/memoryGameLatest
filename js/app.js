@@ -78,7 +78,7 @@ cardArray[index].addEventListener('click',function(){
 //display a pair of cards for 2 seconds and then hide	
 function countdown_init() {
 			
-	setTimeout('timeout_trigger()', 2000);
+	setTimeout(timeout_trigger, 2000);
 }
 
 function timeout_trigger() {
@@ -100,7 +100,9 @@ function timeout_trigger() {
  }
  function displayCard(card){
 	 
-	 
+	//start game timer
+	startGameTimer();
+	
 	let cardInFocus = card;
 	  
 	let buttonClasses = cardInFocus.classList;
@@ -113,13 +115,10 @@ function timeout_trigger() {
 		card.classList.add("open", "show");
 		
 	}
-	 gameInProgress = true;
-	
-	
+	 	
 	openCardArray[openCardIndex++] = card;
 	
-	//start game timer
-	startGameTimer();
+	
 	//check if the 2 open cards match
 	if(openCardArray.length == 2){
 		
@@ -149,14 +148,25 @@ function timeout_trigger() {
  }
  function startGameTimer(){
 	 
+	 if(gameInProgress){
+		 
+		 return;
+	 }
+	 else{
+		 
+		gameInProgress = true;
+	
+		let start = Date.now() 
+		
 		timerInterval = setInterval(function(){
 		 
-		document.getElementById("seconds").innerHTML = pad(++totalSeconds % 60); 
-		document.getElementById("minutes").innerHTML = pad(parseInt(totalSeconds / 60),10);
+		document.getElementById("seconds").innerHTML = pad(Math.floor((Date.now() - start) / 1000));
+ 
+		document.getElementById("minutes").innerHTML = pad(parseInt(Math.floor((Date.now() - start) / 1000) / 60));
 	 		 
-	 }, 1000);
+		}, 200);
 
-	
+	}
  }
 
 let restartButton = document.querySelector(".restart" ,".fa fa-repeat");
@@ -166,10 +176,12 @@ restartButton.addEventListener('click',reStart);
 
 function reStart(){
 		 
-		 document.querySelector('h1').innerHTML="Memory Game";
-		 console.log(timerInterval);
-		clearInterval(timerInterval);
+		 gameInProgress=false;
 		 
+		 clearInterval(timerInterval);
+		 
+		 document.querySelector('h1').innerHTML="Memory Game";
+		 		 
 		 document.getElementById("seconds").innerHTML = "00";
 		 
 		 document.getElementById("minutes").innerHTML = "00";
