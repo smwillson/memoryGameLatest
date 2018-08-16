@@ -11,19 +11,6 @@
  */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
 
 
 /*
@@ -50,145 +37,216 @@ let openCardArray= [],
 	openCardIndex= 0;
 
 let  timerInterval;
-	
-let seconds = document.getElementById("seconds");
-let minutes = document.getElementById("minutes");
- 
-let cardArray= document.querySelectorAll(".deck .card");
 
 let gameInProgress = false;
 
+let numberOfMoves = 0;
+
+
+let restartButton = document.querySelector(".restart" ,".fa fa-repeat");
+
+
 /* ************************ Start logic ********************************** */
 
+//create the document body
+
+
+let cardArray =document.querySelectorAll(".deck .card");
+
+cardArray= shuffle(cardArray);
+
+  //create a list of all the elements
+ let elementsArray= [];
+ for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
+	 
+	
+	let newElement =  cardArray[cardIndex].firstElementChild;
+	elementsArray[cardIndex] = newElement;
+	console.log(elementsArray[cardIndex]);
+ }
+
+  for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
+	  
+	 let elementToRemove = cardArray[cardIndex].firstElementChild; 
+	 cardArray[cardIndex].removeChild(elementToRemove);
+	 cardArray[cardIndex].insertAdjacentElement('afterbegin', elementsArray[cardIndex]);
+	  
+  }
+  
+  let liArray= [];
+  
+  for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
+	  
+	  let newListElement = document.createElement('li');
+	  newListElement.classList.add("card");
+	  newListElement.appendChild(cardArray[cardIndex]);
+	  liArray[cardIndex] = newListElement;
+  }
+ //console.log(liArray);
+ for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
+ 
+ document.body.getElementsByClassName("deck")[0].append(liArray[cardIndex]);
+ 
+ }
+ 
  //set up an event listener for all cards
 for(let index = 0; index < cardArray.length; index++){
-	
+
 cardArray[index].addEventListener('click',function(){
-	
+
 	document.querySelector('h1').innerHTML="New Game Started";
-	
+
 	isCardClicked = true;
 	
-	displayCard(this);
-	
-	
+	//display the card clicked on
+	displayCard(cardArray[index]);
+
+	//start game timer
+	startGameTimer();
+
+
+	//update the number of moves
+	updateNumberofMovesMade();
+
+	//add open card to an array of cards
+	addCardToOpenCardArray(this);
 });
 	}
-	
+
 //display a pair of cards for 2 seconds and then hide	
 function countdown_init() {
-			
+
 	setTimeout(timeout_trigger, 2000);
 }
 
 function timeout_trigger() {
-  
+
   for(let index = openCardArray.length -1; index > -1 ; index--){    
-	  
+
 	  openCardArray[index].classList.remove("open", "show");
   }
- 
+
 	resetOpenCardArray();
- 
+
  }
 
  function resetOpenCardArray(){
-	 
+
 	openCardArray=[];   //reset openCardArray
 	openCardIndex= 0;  //reset index 
-	 
+
  }
  function displayCard(card){
-	 
-	//start game timer
-	startGameTimer();
-	
+
+
 	let cardInFocus = card;
-	  
 	let buttonClasses = cardInFocus.classList;
-	
-	console.log(buttonClasses);
-	
-	
+
+	console.log('button class '+buttonClasses);
+
+
 	if(isCardClicked){
-		
+
 		card.classList.add("open", "show");
-		
+
 	}
-	 	
-	openCardArray[openCardIndex++] = card;
-	
-	
-	//check if the 2 open cards match
-	if(openCardArray.length == 2){
-		
-		//get the class names of the <i> elements
-		let cardZeroClass = openCardArray[1].getElementsByTagName("i")[0].className;
-		let cardOneClass = openCardArray[0].getElementsByTagName("i")[0].className;
-				
-		//check if the classes of the 2 cards match.
-		if(cardZeroClass === cardOneClass){
-			
-			openCardArray[0].classList.remove("open", "show"); 
-			openCardArray[0].classList.add("match");
-			
-			openCardArray[1].classList.remove("open", "show");
-			openCardArray[1].classList.add("match");
-			
-			resetOpenCardArray();
-		}
-		else{
-			countdown_init();  // start counting down and hide the card again
-			
-		}
-		
-	}
-	
-	
+
  }
  function startGameTimer(){
-	 
+
 	 if(gameInProgress){
-		 
+
 		 return;
 	 }
 	 else{
-		 
+
 		gameInProgress = true;
-	
+
 		let start = Date.now() 
-		
+
 		timerInterval = setInterval(function(){
-		 
+
 		document.getElementById("seconds").innerHTML = pad(Math.floor((Date.now() - start) / 1000));
- 
+
 		document.getElementById("minutes").innerHTML = pad(parseInt(Math.floor((Date.now() - start) / 1000) / 60));
-	 		 
+
 		}, 200);
 
 	}
  }
 
-let restartButton = document.querySelector(".restart" ,".fa fa-repeat");
-	 
-	 
 restartButton.addEventListener('click',reStart);
 
 function reStart(){
-		 
-		 gameInProgress=false;
-		 
+
+		 gameInProgress = false;
+
 		 clearInterval(timerInterval);
-		 
-		 document.querySelector('h1').innerHTML="Memory Game";
-		 		 
+
+		 document.querySelector('h1').innerHTML = "Memory Game";
+
 		 document.getElementById("seconds").innerHTML = "00";
-		 
+
 		 document.getElementById("minutes").innerHTML = "00";
+
+		 document.querySelector(".moves").innerHTML = "0";
+
+
 	 }
- 
- 
+
+
  function pad(timeValue) {
-	 
+
   return timeValue > 9 ? timeValue : "0" + timeValue;
  }
+
+ function updateNumberofMovesMade(){
+
+	 //change text to reflect the  number of moves made
+	 document.querySelector(".moves").innerHTML = ++numberOfMoves;
+
+
+ }
+
+ function addCardToOpenCardArray(card){
+
+openCardArray[openCardIndex++] = card;
+
+
+	//check if the 2 open cards match
+	if(openCardArray.length == 2){
+
+		//get the class names of the <i> elements
+		let cardZeroClass = openCardArray[1].getElementsByTagName("i")[0].className;
+		let cardOneClass = openCardArray[0].getElementsByTagName("i")[0].className;
+
+		//check if the classes of the 2 cards match.
+		if(cardZeroClass === cardOneClass){
+
+			openCardArray[0].classList.remove("open", "show"); 
+			openCardArray[0].classList.add("match");
+
+			openCardArray[1].classList.remove("open", "show");
+			openCardArray[1].classList.add("match");
+
+			resetOpenCardArray();
+		}
+		else{
+			countdown_init();  // start counting down and hide the card again
+
+		}
+
+	}	
+
+ }
+
+ function shuffle(array) {
+	  array = Array.from(array);
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; 
+	}	
+	
+	return array;
+}
+		
