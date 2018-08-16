@@ -45,7 +45,9 @@ let numberOfMoves = 0;
 
 let restartButton = document.querySelector(".restart" ,".fa fa-repeat");
 
+let matchedPairArray = [];
 
+let matchedPairIndex = 0;
 /* ************************ Start logic ********************************** */
 
 //create the document body
@@ -55,16 +57,16 @@ let cardArray =document.querySelectorAll(".deck .card");
 
 cardArray= shuffle(cardArray);
 
-  //create a list of all the elements
+  //create a list of all the child elements of the <li> tags, this will be the new cards that will eventually be displayed
  let elementsArray= [];
  for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
 	 
+	let newChildElement =  cardArray[cardIndex].firstElementChild;
+	elementsArray[cardIndex] = newChildElement;
 	
-	let newElement =  cardArray[cardIndex].firstElementChild;
-	elementsArray[cardIndex] = newElement;
-	console.log(elementsArray[cardIndex]);
  }
 
+ //remove the current child from the list of <li> elements and add the new child element instead
   for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
 	  
 	 let elementToRemove = cardArray[cardIndex].firstElementChild; 
@@ -73,8 +75,9 @@ cardArray= shuffle(cardArray);
 	  
   }
   
-  let liArray= [];
+  let liArray= []; //array of new <li> elements we are about to create
   
+  //create a new <li> tag, add the class attribute "card" to it and the append the child <li> element to it
   for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
 	  
 	  let newListElement = document.createElement('li');
@@ -82,7 +85,8 @@ cardArray= shuffle(cardArray);
 	  newListElement.appendChild(cardArray[cardIndex]);
 	  liArray[cardIndex] = newListElement;
   }
- //console.log(liArray);
+
+ //append the array of <li> items to parent class "deck"
  for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
  
  document.body.getElementsByClassName("deck")[0].append(liArray[cardIndex]);
@@ -110,6 +114,8 @@ cardArray[index].addEventListener('click',function(){
 
 	//add open card to an array of cards
 	addCardToOpenCardArray(this);
+	
+	
 });
 	}
 
@@ -134,16 +140,15 @@ function timeout_trigger() {
 
 	openCardArray=[];   //reset openCardArray
 	openCardIndex= 0;  //reset index 
-
+	
+	
  }
+
  function displayCard(card){
 
 
 	let cardInFocus = card;
 	let buttonClasses = cardInFocus.classList;
-
-	console.log('button class '+buttonClasses);
-
 
 	if(isCardClicked){
 
@@ -166,9 +171,9 @@ function timeout_trigger() {
 
 		timerInterval = setInterval(function(){
 
-		document.getElementById("seconds").innerHTML = pad(Math.floor((Date.now() - start) / 1000));
+		document.getElementById("seconds").innerHTML = pad(Math.floor((Date.now() - start) / 1000)%60);
 
-		document.getElementById("minutes").innerHTML = pad(parseInt(Math.floor((Date.now() - start) / 1000) / 60));
+		document.getElementById("minutes").innerHTML = pad(parseInt(Math.floor((Date.now() - start) / 1000) / 60),10);
 
 		}, 200);
 
@@ -190,21 +195,42 @@ function reStart(){
 		 document.getElementById("minutes").innerHTML = "00";
 
 		 document.querySelector(".moves").innerHTML = "0";
+		
+		 numberOfMoves = 0;
+		 
+		 matchedPairArray = [];
 
-
+		matchedPairIndex = 0;
+		
+		for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
+			
+		cardArray[cardIndex].classList.remove('open', 'show', 'match');
+		}	
 	 }
 
 
  function pad(timeValue) {
 
-  return timeValue > 9 ? timeValue : "0" + timeValue;
+ return timeValue > 9 ? timeValue : "0" + timeValue;
+
  }
 
  function updateNumberofMovesMade(){
 
 	 //change text to reflect the  number of moves made
 	 document.querySelector(".moves").innerHTML = ++numberOfMoves;
-
+	 
+	 let starArray = document.getElementsByClassName("fa fa-star");
+	 
+	 
+	if(numberOfMoves > 40){
+		
+		starArray[1].classList.add("checked");
+		
+	}else if(numberOfMoves > 20){
+		
+		starArray[2].classList.add("checked");
+	}
 
  }
 
@@ -222,24 +248,37 @@ openCardArray[openCardIndex++] = card;
 
 		//check if the classes of the 2 cards match.
 		if(cardZeroClass === cardOneClass){
-
+			
 			openCardArray[0].classList.remove("open", "show"); 
 			openCardArray[0].classList.add("match");
 
 			openCardArray[1].classList.remove("open", "show");
 			openCardArray[1].classList.add("match");
-
+			
+			matchedPairArray[matchedPairIndex++] = "match";
+			
 			resetOpenCardArray();
-		}
+			}
+		
 		else{
-			countdown_init();  // start counting down and hide the card again
+			countdown_init();  // start counting down and hide the cards
 
 		}
 
 	}	
+checkGameOver();
+ } 
 
+ function checkGameOver(){
+	 if(matchedPairArray.length == 8){
+		
+		gameInProgress = 0;
+		window.alert("You won!");
+		clearInterval(timerInterval);
+			
+	 } 
  }
-
+ 
  function shuffle(array) {
 	  array = Array.from(array);
     for (let i = array.length - 1; i > 0; i--) {
