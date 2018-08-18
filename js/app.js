@@ -40,14 +40,20 @@ let  timerInterval;
 
 let gameInProgress = false;
 
-let numberOfMoves = 0;
+let numberOfMoves = numberOfMatchedCards = 0;
 
 
 let restartButton = document.querySelector(".restart" ,".fa fa-repeat");
 
-let matchedPairArray = [];
+let matchedPairArray = totalMatchedArray = [];
 
-let matchedPairIndex = 0;
+
+let matchedPairIndex = totalMatchedArrayIndex = 0;
+
+let numberOfStars = 3;
+
+let gameWonTimer;
+
 /* ************************ Start logic ********************************** */
 
 //create the document body
@@ -60,26 +66,26 @@ cardArray= shuffle(cardArray);
   //create a list of all the child elements of the <li> tags, this will be the new cards that will eventually be displayed
  let elementsArray= [];
  for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
-	 
+
 	let newChildElement =  cardArray[cardIndex].firstElementChild;
 	elementsArray[cardIndex] = newChildElement;
-	
+
  }
 
  //remove the current child from the list of <li> elements and add the new child element instead
   for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
-	  
-	 let elementToRemove = cardArray[cardIndex].firstElementChild; 
+
+	 let elementToRemove = cardArray[cardIndex].firstElementChild;
 	 cardArray[cardIndex].removeChild(elementToRemove);
 	 cardArray[cardIndex].insertAdjacentElement('afterbegin', elementsArray[cardIndex]);
-	  
+
   }
-  
+
   let liArray= []; //array of new <li> elements we are about to create
-  
+
   //create a new <li> tag, add the class attribute "card" to it and the append the child <li> element to it
   for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
-	  
+
 	  let newListElement = document.createElement('li');
 	  newListElement.classList.add("card");
 	  newListElement.appendChild(cardArray[cardIndex]);
@@ -88,11 +94,11 @@ cardArray= shuffle(cardArray);
 
  //append the array of <li> items to parent class "deck"
  for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
- 
+
  document.body.getElementsByClassName("deck")[0].append(liArray[cardIndex]);
- 
+
  }
- 
+
  //set up an event listener for all cards
 for(let index = 0; index < cardArray.length; index++){
 
@@ -101,7 +107,7 @@ cardArray[index].addEventListener('click',function(){
 	document.querySelector('h1').innerHTML="New Game Started";
 
 	isCardClicked = true;
-	
+
 	//display the card clicked on
 	displayCard(cardArray[index]);
 
@@ -114,12 +120,12 @@ cardArray[index].addEventListener('click',function(){
 
 	//add open card to an array of cards
 	addCardToOpenCardArray(this);
-	
-	
+
+
 });
 	}
 
-//display a pair of cards for 2 seconds and then hide	
+//display a pair of cards for 2 seconds and then hide
 function countdown_init() {
 
 	setTimeout(timeout_trigger, 2000);
@@ -127,7 +133,7 @@ function countdown_init() {
 
 function timeout_trigger() {
 
-  for(let index = openCardArray.length -1; index > -1 ; index--){    
+  for(let index = openCardArray.length -1; index > -1 ; index--){
 
 	  openCardArray[index].classList.remove("open", "show");
   }
@@ -139,9 +145,9 @@ function timeout_trigger() {
  function resetOpenCardArray(){
 
 	openCardArray=[];   //reset openCardArray
-	openCardIndex= 0;  //reset index 
-	
-	
+	openCardIndex= 0;  //reset index
+
+
  }
 
  function displayCard(card){
@@ -156,7 +162,10 @@ function timeout_trigger() {
 
 	}
 
+	 gameWonTimer = setTimeout(checkGameOver, 1000);
  }
+
+
  function startGameTimer(){
 
 	 if(gameInProgress){
@@ -167,7 +176,7 @@ function timeout_trigger() {
 
 		gameInProgress = true;
 
-		let start = Date.now() 
+		let start = Date.now()
 
 		timerInterval = setInterval(function(){
 
@@ -195,17 +204,17 @@ function reStart(){
 		 document.getElementById("minutes").innerHTML = "00";
 
 		 document.querySelector(".moves").innerHTML = "0";
-		
+
 		 numberOfMoves = 0;
-		 
+
 		 matchedPairArray = [];
 
 		matchedPairIndex = 0;
-		
+
 		for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
-			
+
 		cardArray[cardIndex].classList.remove('open', 'show', 'match');
-		}	
+		}
 	 }
 
 
@@ -219,25 +228,28 @@ function reStart(){
 
 	 //change text to reflect the  number of moves made
 	 document.querySelector(".moves").innerHTML = ++numberOfMoves;
-	 
-	 let starArray = document.getElementsByClassName("fa fa-star");
-	 
-	 
+
+	let starArray = document.getElementsByClassName("fa fa-star");
+
+
 	if(numberOfMoves > 40){
-		
+
 		starArray[1].classList.add("checked");
-		
+
+		numberOfStars--;
+
 	}else if(numberOfMoves > 20){
-		
+
 		starArray[2].classList.add("checked");
+
+		numberOfStars--;
 	}
 
  }
 
  function addCardToOpenCardArray(card){
 
-openCardArray[openCardIndex++] = card;
-
+   openCardArray[openCardIndex++] = card;
 
 	//check if the 2 open cards match
 	if(openCardArray.length == 2){
@@ -248,44 +260,77 @@ openCardArray[openCardIndex++] = card;
 
 		//check if the classes of the 2 cards match.
 		if(cardZeroClass === cardOneClass){
-			
-			openCardArray[0].classList.remove("open", "show"); 
+
+			openCardArray[0].classList.remove("open", "show");
 			openCardArray[0].classList.add("match");
 
 			openCardArray[1].classList.remove("open", "show");
 			openCardArray[1].classList.add("match");
-			
+
 			matchedPairArray[matchedPairIndex++] = "match";
-			
+			totalMatchedArray[totalMatchedArrayIndex++]= "match";
+
+			numberOfMatchedCards++;
+
 			resetOpenCardArray();
 			}
-		
+
 		else{
 			countdown_init();  // start counting down and hide the cards
 
 		}
 
-	}	
-checkGameOver();
- } 
+	}
+
+ }
 
  function checkGameOver(){
-	 if(matchedPairArray.length == 8){
-		
+
+	 if(numberOfMatchedCards==8){
 		gameInProgress = 0;
-		window.alert("You won!");
+		// Get the modal
+	var modal = document.getElementById('myModal');
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// When the user wins, open the modal
+
+    modal.style.display = "block";
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+		modal.style.display = "none";
+	}
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+// when the use clicks new game button, reset
+
+$(document).on("click", "#new-game-button", function(event){
+    reStart();
+		modal.style.display = "none";
+});
+
+let tempVar = (numberOfMoves > 1)?"stars":"star";
+document.getElementsByClassName("game-win-msg")[0].innerHTML=`You won in ${numberOfMoves} moves and ${numberOfStars} ${tempVar}!`;
 		clearInterval(timerInterval);
-			
-	 } 
+		clearInterval(gameWonTimer);
+	}
  }
- 
+
+
  function shuffle(array) {
 	  array = Array.from(array);
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]]; 
-	}	
-	
+        [array[i], array[j]] = [array[j], array[i]];
+	}
+
 	return array;
 }
-		

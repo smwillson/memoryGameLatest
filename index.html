@@ -6,6 +6,8 @@
     <meta name="description" content="">
     <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
@@ -22,20 +24,20 @@
         		<li><i class="fa fa-star"></i></li>
         	</ul>
 
-        	<span class="moves">0</span> Moves      
-						
+        	<span class="moves">0</span> Moves
+
 			<div class="restart">
         		<i class="fa fa-repeat"></i>
         	</div>
-			
-			
+
+
 			<span class="memory-game-timer">
 			<label id="timer-label"> Time Elapsed:</label>
 			<label id="minutes"> 00 </label>:<label id="seconds"> 00 </label>
 			</span>
-			
+
 		</section>
-		
+
         <ul class="deck">
             <li class="card">
                 <i class="fa fa-diamond"></i>
@@ -87,7 +89,28 @@
             </li>
         </ul>
     </div>
+<!-- The Modal -->
+<div id="myModal" class="modal">
 
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Modal Header</h2>
+    </div>
+    <div class="modal-body">
+     <button id="new-game-button">Play New Game</button>
+      <p>Congrats... You won!</p>
+	  <p><span class="game-win-msg"></span></p>
+    </div>
+    <div class="modal-footer">
+      <h3>Modal Footer</h3>
+    </div>
+  </div>
+
+</div>
+
+</div>
     <script src="js/app.js"></script>
 </body>
 </html>
