@@ -3,12 +3,7 @@
  */
 
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 
@@ -54,21 +49,39 @@ let numberOfStars = 3;
 
 let gameWonTimer;
 
+let cardIndexNumber = 1;
+
+const winMsg = `Congrats... You won!`;
 /* ************************ Start logic ********************************** */
 
 //create the document body
 
 
-let cardArray =document.querySelectorAll(".deck .card");
+let cardArray = cardArraySnapshot = document.querySelectorAll(".deck .card");
 
 cardArray= shuffle(cardArray);
+reshuffle();
+
+/*
+ * Display the cards on the page
+ *   - shuffle the list of cards using the provided "shuffle" method below
+ *   - loop through each card and create its HTML
+ *   - add each card's HTML to the page
+ */
+function reshuffle(){
+//lets give all the cards unique ids first
+
+for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
+ cardArray[cardIndex].setAttribute("id",cardIndexNumber++);
+
+}
 
   //create a list of all the child elements of the <li> tags, this will be the new cards that will eventually be displayed
  let elementsArray= [];
  for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
 
 	let newChildElement =  cardArray[cardIndex].firstElementChild;
-	elementsArray[cardIndex] = newChildElement;
+		elementsArray[cardIndex] = newChildElement;
 
  }
 
@@ -98,7 +111,7 @@ cardArray= shuffle(cardArray);
  document.body.getElementsByClassName("deck")[0].append(liArray[cardIndex]);
 
  }
-
+}
  //set up an event listener for all cards
 for(let index = 0; index < cardArray.length; index++){
 
@@ -149,7 +162,7 @@ function timeout_trigger() {
 
 
  }
-
+//when a user clicks a card, display it for the user
  function displayCard(card){
 
 
@@ -165,7 +178,7 @@ function timeout_trigger() {
 	 gameWonTimer = setTimeout(checkGameOver, 1000);
  }
 
-
+//start the timer that counts the total elpased time since game start
  function startGameTimer(){
 
 	 if(gameInProgress){
@@ -191,6 +204,7 @@ function timeout_trigger() {
 
 restartButton.addEventListener('click',reStart);
 
+//what happens when a user restarts or starts a new game after winning the game
 function reStart(){
 
 		 gameInProgress = false;
@@ -206,24 +220,27 @@ function reStart(){
 		 document.querySelector(".moves").innerHTML = "0";
 
 		 numberOfMoves = 0;
+		 numberOfMatchedCards=0;
 
-		 matchedPairArray = [];
-
-		matchedPairIndex = 0;
+		 	resetOpenCardArray();
 
 		for(let cardIndex = 0; cardIndex < cardArray.length ; cardIndex++){
 
 		cardArray[cardIndex].classList.remove('open', 'show', 'match');
-		}
+
+
 	 }
+	location.reload(true);
+}
 
-
+//time formatting
  function pad(timeValue) {
 
  return timeValue > 9 ? timeValue : "0" + timeValue;
 
  }
 
+//adds +1 to the moves everytime the user clicks on a card
  function updateNumberofMovesMade(){
 
 	 //change text to reflect the  number of moves made
@@ -231,7 +248,7 @@ function reStart(){
 
 	let starArray = document.getElementsByClassName("fa fa-star");
 
-
+//take a start away for every 20 moves made
 	if(numberOfMoves > 40){
 
 		starArray[1].classList.add("checked");
@@ -247,6 +264,7 @@ function reStart(){
 
  }
 
+// to check two cards that are open for a match
  function addCardToOpenCardArray(card){
 
    openCardArray[openCardIndex++] = card;
@@ -258,17 +276,16 @@ function reStart(){
 		let cardZeroClass = openCardArray[1].getElementsByTagName("i")[0].className;
 		let cardOneClass = openCardArray[0].getElementsByTagName("i")[0].className;
 
-		//check if the classes of the 2 cards match.
-		if(cardZeroClass === cardOneClass){
+		//check if the classes of the 2 cards match and the same card isnt clicked twice
+		if(cardZeroClass === cardOneClass &&
+			openCardArray[0].getAttribute("id")
+			!== openCardArray[1].getAttribute("id")){
 
 			openCardArray[0].classList.remove("open", "show");
 			openCardArray[0].classList.add("match");
 
 			openCardArray[1].classList.remove("open", "show");
 			openCardArray[1].classList.add("match");
-
-			matchedPairArray[matchedPairIndex++] = "match";
-			totalMatchedArray[totalMatchedArrayIndex++]= "match";
 
 			numberOfMatchedCards++;
 
@@ -283,14 +300,14 @@ function reStart(){
 	}
 
  }
-
+//keep checking after the interval of a second if the game is over
  function checkGameOver(){
 
-	 if(numberOfMatchedCards==8){
+	 if(numberOfMatchedCards==1){
 		gameInProgress = 0;
 		// Get the modal
 	var modal = document.getElementById('myModal');
-
+	var modalOverlay = document.querySelector("#modal-overlay");
 	// Get the <span> element that closes the modal
 	var span = document.getElementsByClassName("close")[0];
 
@@ -301,12 +318,14 @@ function reStart(){
 	// When the user clicks on <span> (x), close the modal
 	span.onclick = function() {
 		modal.style.display = "none";
+
 	}
 
 	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
+
     }
 }
 
@@ -318,13 +337,15 @@ $(document).on("click", "#new-game-button", function(event){
 });
 
 let tempVar = (numberOfMoves > 1)?"stars":"star";
-document.getElementsByClassName("game-win-msg")[0].innerHTML=`You won in ${numberOfMoves} moves and ${numberOfStars} ${tempVar}!`;
+document.getElementsByClassName("game-win-msg")[0].innerHTML=`${winMsg}
+You won in ${numberOfMoves} moves and ${numberOfStars} ${tempVar}!`;
+
 		clearInterval(timerInterval);
 		clearInterval(gameWonTimer);
 	}
  }
 
-
+//function to shuffle array
  function shuffle(array) {
 	  array = Array.from(array);
     for (let i = array.length - 1; i > 0; i--) {

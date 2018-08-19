@@ -118,7 +118,7 @@ h1 {
 /*
  * Styles for the memory game timer
  */
- 
+
 #minutes{
 	display: inline-block;
 }
@@ -128,8 +128,8 @@ h1 {
 }
 
 #timer-label{
-	
-	padding-left:10px; 
+
+	padding-left:10px;
 	position: right;
 	font-family: sans-serif;
 }
@@ -153,7 +153,6 @@ h1 {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -166,6 +165,7 @@ h1 {
 /* Modal Content */
 .modal-content {
     position: relative;
+    height: 50%;
     background-color: #fefefe;
     margin: auto;
     padding: 0;
@@ -180,7 +180,7 @@ h1 {
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0} 
+    from {top:-300px; opacity:0}
     to {top:0; opacity:1}
 }
 
@@ -203,7 +203,6 @@ h1 {
     text-decoration: none;
     cursor: pointer;
 }
-
 .modal-header {
     padding: 2px 16px;
     background-color: #5cb85c;
@@ -216,4 +215,25 @@ h1 {
     padding: 2px 16px;
     background-color: #5cb85c;
     color: white;
+}
+
+#new-game-button{
+    border: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: lightgreen;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 21px;
+
+}
+.game-win-msg{
+  color: blue;
+  font-family: sans-serif;
+  padding-top: 20px;
+  position: absolute;
+
 }
