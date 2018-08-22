@@ -142,6 +142,7 @@ h1 {
 	position: right;
 	font-family: sans-serif;
 }
+/* shake logic:https://www.w3schools.com/howto/howto_css_shake_image.asp*/
 
 @keyframes shake {
 	0% {
@@ -179,7 +180,7 @@ h1 {
 	}
 }
 
-
+/* Modal design :https://www.w3schools.com/howto/howto_css_modals.asp*/
 /* The Modal (background) */
 
 .modal {
@@ -233,48 +234,6 @@ h1 {
 	overflow: auto;
 }
 
-
-/* Add Animation */
-
-@-webkit-keyframes animatetop {
-	from {
-		top: -300px;
-		opacity: 0
-	}
-	to {
-		top: 0;
-		opacity: 1
-	}
-}
-
-@keyframes animatetop {
-	from {
-		top: -300px;
-		opacity: 0
-	}
-	to {
-		top: 0;
-		opacity: 1
-	}
-}
-
-
-/* The Close Button */
-
-.close {
-	color: white;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-	color: #000;
-	text-decoration: none;
-	cursor: pointer;
-}
-
 .modal-header {
 	padding: 2px 16px;
 	background-color: #5cb85c;
@@ -285,23 +244,20 @@ h1 {
 	padding: 2px 16px;
 }
 
-.modal-footer {
-	padding: 2px 16px;
-	background-color: #5cb85c;
-	color: white;
-}
-
 #new-game-button {
-	border: 0;
+	border: 1;
+  border-style: solid;
+  border-color: black;
+  border-radius: 10px;
 	position: absolute;
+  padding: 20px 20px;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	background: lightgreen;
-	color: white;
-	padding: 20px 20px;
-	border-radius: 10px;
+	color: black;
 	font-size: 21px;
+  font-family: sans-serif;
 }
 
 .game-win-msg {
@@ -338,15 +294,17 @@ h1 {
 		width: 80%;
 		margin-left: 2.75%;
 	}
+  .deck {
+    width: 650px;
+  }
+  .score-panel {
+    display: block;
+  }
 	#gameName {
 		display: block;
 	}
-	.score-panel {
-		display: block;
-	}
-	.deck {
-		width: 650px;
-	}
+
+
 }
 
 @media screen and (min-width:320px) and (max-width:640px) {

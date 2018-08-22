@@ -1,7 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
-// Shuffle function from http://stackoverflow.com/a/2450976
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -27,15 +27,9 @@ let timerInterval;
 
 let gameInProgress = false;
 
-let numberOfMoves = numberOfMatchedCards = 0;
-
+let numberOfMoves = numberOfMatchedCardPairs = 0;
 
 let restartButton = document.querySelector(".restart", ".fa fa-repeat");
-
-let matchedPairArray = totalMatchedArray = [];
-
-
-let matchedPairIndex = totalMatchedArrayIndex = 0;
 
 let numberOfStars = 3;
 
@@ -49,7 +43,7 @@ const winMsg = `Congrats... You won!`;
 //create the document body
 
 
-let cardArray = cardArraySnapshot = document.querySelectorAll(".deck .card");
+let cardArray = document.querySelectorAll(".deck .card");
 
 cardArray = shuffle(cardArray);
 reshuffle();
@@ -171,6 +165,8 @@ function displayCard(card) {
 }
 
 //start the timer that counts the total elpased time since game start
+
+//timer logic https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
 function startGameTimer() {
 
     if (gameInProgress) {
@@ -180,7 +176,7 @@ function startGameTimer() {
 
         gameInProgress = true;
 
-        let start = Date.now()
+        let start = Date.now();
 
         timerInterval = setInterval(function() {
 
@@ -219,7 +215,7 @@ function reStart() {
     document.querySelector(".moves").innerHTML = "0";
 
     numberOfMoves = 0;
-    numberOfMatchedCards = 0;
+    numberOfMatchedCardPairs = 0;
 
     resetOpenCardArray();
 
@@ -286,7 +282,7 @@ function addCardToOpenCardArray(card) {
             openCardArray[1].classList.remove("open", "show");
             openCardArray[1].classList.add("match");
 
-            numberOfMatchedCards++;
+            numberOfMatchedCardPairs++;
 
             resetOpenCardArray();
         } else {
@@ -300,8 +296,10 @@ function addCardToOpenCardArray(card) {
 //keep checking after the interval of a second if the game is over
 function checkGameOver() {
 
-    if (numberOfMatchedCards == 8) {
+    if (numberOfMatchedCardPairs == 8) {
         gameInProgress = 0;
+
+        // how to use a modal: https://www.w3schools.com/howto/howto_css_modals.asp
         // Get the modal
         let modal = document.getElementById('myModal');
         // Get the <span> element that closes the modal
@@ -311,21 +309,7 @@ function checkGameOver() {
 
         modal.style.display = "block";
 
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-
-            }
-        }
-
-        // when the use clicks new game button, reset
+      // when the use clicks new game button, reset
 
         $(document).on("click", "#new-game-button", function(event) {
             reStart();
@@ -342,6 +326,7 @@ You won in ${numberOfMoves} moves and ${numberOfStars} ${tempVar}!`;
 }
 
 //function to shuffle array
+// Shuffle function from http://stackoverflow.com/a/2450976(updated for ES6 / ECMAScript 2015)
 function shuffle(array) {
     array = Array.from(array);
     for (let i = array.length - 1; i > 0; i--) {
