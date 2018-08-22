@@ -229,6 +229,7 @@ function reStart() {
 }
 
 //time formatting
+//if the value of seconds is greater than 9, then pad the number with a 0, otherwise do nothing
 function pad(timeValue) {
 
     return timeValue > 9 ? timeValue : "0" + timeValue;
