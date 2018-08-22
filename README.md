@@ -18,3 +18,23 @@ For specific, detailed instructions, look at the project instructions in the [Ud
 This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
 
 For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+
+
+##Core functionality:
+
+
+* displayCard()-- when a card is clicked, display it to the user
+
+* startGameTimer()-- the timer that measures time elapsed
+
+* updateNumberofMovesMade()-- keep updating the moves made as the user clicks a card and the stars
+
+* addCardToOpenCardArray()-- checks if the array contains 2 cards, if so , check that have the same class but different ids. If true, lock them in place else start countdown to hide open cards.
+
+* resetOpenCardArray()-- remove displayed card from the global open card array
+
+* countdown_init()-- start countdown to hide cards
+
+* checkGameOver()-- keep checking in the background if the game is over, display modal to user with congratulatory is message
+
+* reStart()-- reset everything
