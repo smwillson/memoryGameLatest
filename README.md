@@ -23,18 +23,18 @@ For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
 ##Core functionality:
 
 
-* displayCard()-- when a card is clicked, display it to the user
+* displayCard()--contains logic that is used when a card is clicked to display it to the user
 
-* startGameTimer()-- the timer that measures time elapsed
+* startGameTimer()-- contains logic for the timer that measures time elapsed
 
-* updateNumberofMovesMade()-- keep updating the moves made as the user clicks a card and the stars
+* updateNumberofMovesMade()--  contains logic that is used to keep updating the moves made as the user clicks a card and the stars
 
-* addCardToOpenCardArray()-- checks if the array contains 2 cards, if so , check that have the same class but different ids. If true, lock them in place else start countdown to hide open cards.
+* addCardToOpenCardArray()-- contains logic that checks if the array contains 2 cards, if so , check that have the same class but different ids. If true, lock them in place else start countdown to hide open cards.
 
-* resetOpenCardArray()-- remove displayed card from the global open card array
+* resetOpenCardArray()-- contains logic that removes displayed card from the global open card array
 
-* countdown_init()-- start countdown to hide cards
+* countdown_init()-- contains logic that starts countdown to hide cards
 
-* checkGameOver()-- keep checking in the background if the game is over, display modal to user with congratulatory is message
+* checkGameOver()-- contains logic that keeps checking in the background if the game is over, display modal to user with congratulatory is message
 
-* reStart()-- reset everything
+* reStart()-- contains logic that resets everything
