@@ -247,14 +247,14 @@ function updateNumberofMovesMade() {
 
     let starArray = document.getElementsByClassName("fa fa-star");
 
-    //take a start away for every 20 moves made
-    if (numberOfMoves > 40) {
+    //take a star away for every 20 moves made
+    if (numberOfMoves == 40) {
 
         starArray[1].classList.add("checked");
 
         numberOfStars--;
 
-    } else if (numberOfMoves > 20) {
+    } else if (numberOfMoves == 20) {
 
         starArray[2].classList.add("checked");
 
@@ -332,7 +332,7 @@ function checkGameOver() {
             modal.style.display = "none";
         });
 
-        let tempVar = (numberOfMoves > 1) ? "stars" : "star";
+        let tempVar = (numberOfStars > 1) ? "stars" : "star";
         document.getElementsByClassName("game-win-msg")[0].innerHTML = `${winMsg}
 You won in ${numberOfMoves} moves and ${numberOfStars} ${tempVar}!`;
 
