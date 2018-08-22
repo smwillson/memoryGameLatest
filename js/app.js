@@ -221,7 +221,7 @@ function reStart() {
 
     for (let cardIndex = 0; cardIndex < cardArray.length; cardIndex++) {
 
-        cardArray[cardIndex].classList.remove('open', 'show', 'match');
+        cardArray[cardIndex].classList.remove("open", "show", "match");
 
 
     }
