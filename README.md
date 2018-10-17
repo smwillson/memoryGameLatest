@@ -1,6 +1,6 @@
 # Memory Game Project
 
-# How to download the project?
+## How to download the project?
 
 In order to clone the project onto your computer via HTTPS URLs (recommended) do the following:
 
@@ -10,7 +10,7 @@ In order to clone the project onto your computer via HTTPS URLs (recommended) do
 
 More information : https://help.github.com/articles/which-remote-url-should-i-use/
 
-# How to play the game?
+## How to play the game?
 
 To run the game, simply open the index.html file.
 
