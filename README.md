@@ -1,40 +1,37 @@
 # Memory Game Project
 
-## Table of Contents
+# How to download the project?
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+In order to clone the project onto your computer via HTTPS URLs (recommended) do the following:
 
-## Instructions
+1.  Open a new command prompt window
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+2.  Type git clone https://github.com/smwillson/memoryGameLatest.git at the prompt.
 
-To get started, open `js/app.js` and start building out the app's functionality
+More information : https://help.github.com/articles/which-remote-url-should-i-use/
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+# How to play the game?
 
-## Contributing
+To run the game, simply open the index.html file.
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+Click on any one of the tiles to start a new game. Enjoy!
 
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+## Core functionality:
 
+The following methods hold the core functionality for the project.
 
-##Core functionality:
+* displayCard: contains logic that is used when a card is clicked to display it to the user
 
+* startGameTimer: contains logic for the timer that measures time elapsed
 
-* displayCard()--contains logic that is used when a card is clicked to display it to the user
+* updateNumberofMovesMade: contains logic that is used to keep updating the moves made as the user clicks a card and the stars
 
-* startGameTimer()-- contains logic for the timer that measures time elapsed
+* addCardToOpenCardArray: contains logic that checks if the array contains 2 cards, if so , check that have the same class but different ids. If true, lock them in place else start countdown to hide open cards.
 
-* updateNumberofMovesMade()--  contains logic that is used to keep updating the moves made as the user clicks a card and the stars
+* resetOpenCardArray: contains logic that removes displayed card from the global open card array
 
-* addCardToOpenCardArray()-- contains logic that checks if the array contains 2 cards, if so , check that have the same class but different ids. If true, lock them in place else start countdown to hide open cards.
+* countdown_init: contains logic that starts countdown to hide cards
 
-* resetOpenCardArray()-- contains logic that removes displayed card from the global open card array
+* checkGameOver: contains logic that keeps checking in the background if the game is over, display modal to user with congratulatory is message
 
-* countdown_init()-- contains logic that starts countdown to hide cards
-
-* checkGameOver()-- contains logic that keeps checking in the background if the game is over, display modal to user with congratulatory is message
-
-* reStart()-- contains logic that resets everything
+* reStart: contains logic that resets everything
