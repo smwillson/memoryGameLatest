@@ -164,7 +164,7 @@ function displayCard(card) {
     gameWonTimer = setTimeout(checkGameOver, 1000);
 }
 
-//start the timer that counts the total elpased time since game start
+//start the timer that counts the total elapsed time since game start
 
 //timer logic https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
 function startGameTimer() {
